@@ -1,32 +1,24 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
+import * as S from './styled';
+
+import states from '../states';
+import CastingBar from '../castingBar';
 
 function MainScreen() {
-    const [fps, setFps] = useState(60);
-    const [count, setCount] = useState(0);
-
-    // useRef is used in values that shouldnt trigger a re-render when updtated
-    const requestRef = useRef();
-    const previousTimeRef = useRef(Date.now());
-
-    const animate = () => {
-        const currentTime = Date.now();
-
-        const deltaTime = currentTime - previousTimeRef.current;
-        if (deltaTime > 1000 / fps) {
-            setCount(prevCount => (prevCount + 1) % fps);
-            previousTimeRef.current = currentTime;
-        }
-
-        requestRef.current = requestAnimationFrame(animate);
-    }
-
-    // useEffect starts and ends the animationFrame
+    const [gameState, setGameState] = useState(states.Idle);
+    
     useEffect(() => {
-        requestRef.current = requestAnimationFrame(animate);
-        return () => cancelAnimationFrame(requestRef.current);
-    }, []); 
+        // Temporary way to test different states
+        if (gameState === states.Idle) {
+            setGameState(states.Casting);
+        }
+    }, []);
 
-    return <div>mainScreen is working! {Math.round(count)}  </div>
+    return (
+        <S.container>
+            {gameState === states.Casting ? <CastingBar/> : false}
+        </S.container>
+    )
 }
 
-export default MainScreen
+export default MainScreen;
