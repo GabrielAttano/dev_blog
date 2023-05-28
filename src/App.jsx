@@ -1,11 +1,12 @@
-import MainScreen from './components/fishingSimulator/MainScreen'
+import Header from './components/header'
+import Home from './pages/home'
 
 function App() {
 
   return (
     <div>
-        hello world!
-        <MainScreen/>
+        <Header />
+        <Home />
     </div>
   )
 
