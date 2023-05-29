@@ -20,3 +20,9 @@ export const containerSmall = styled.div`
     width: 50%;
     height: 100%;
 `;
+
+export const button = styled.button`
+    background-color: #555555;
+    padding: 8px;
+    font-size: large;
+`
