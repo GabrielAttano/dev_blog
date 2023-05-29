@@ -1,26 +1,35 @@
 import { useEffect, useState, useRef } from 'react';
+
 import * as S from './styled';
 
-function CastingBar() {
+import castingMinigameStates from './castingMinigameStates';
 
+function CastingMinigame({ handleCastingMinigameEnd }) {
+
+    // distance where the barContainer is in the canvas
     const barStart = 20;
     const barEnd = 280; 
+
+    // pointer configs
     const arrowPointerSize = 40;
-    const highlightedAreaSize = 50;
-    
-    const canvasRef = useRef(null);
-    const [highlightedAreaPosition, setHighlightedAreaPosition] = useState(null);
-    const arrowPointerPosition = useRef(barStart);
     const arrowPointerSpeed = useRef(3);
+    const arrowPointerPosition = useRef(barStart);
     
+    // highlighted area configs
+    const highlightedAreaSize = 50;
+    const [highlightedAreaPosition, setHighlightedAreaPosition] = useState(null);
+    
+    // canvas
+    const canvasRef = useRef(null);
 
     const draw = (ctx) => {
+        // canvas
         const canvas = canvasRef.current;
         const width = canvas.width; // 300
         const height = canvas.height; // 150
         ctx.clearRect(0, 0, width, height);
 
-        // Draw arrow
+        // Draw pointer
         
         ctx.beginPath();
         ctx.moveTo(arrowPointerPosition.current, height);
@@ -32,7 +41,9 @@ function CastingBar() {
         ctx.fill();
         
 
-        // Keeps the arrow inside container
+        // Changes pointer speed so that it stays inside container
+        // Positive speed => going forward
+        // Negative speed => going backwards
         if (arrowPointerPosition.current + arrowPointerSpeed.current > barEnd) {
             arrowPointerSpeed.current *= -1;
         }
@@ -40,7 +51,7 @@ function CastingBar() {
             arrowPointerSpeed.current *= -1;
         }
 
-        // moves the arrow
+        // moves the pointer position
         arrowPointerPosition.current += arrowPointerSpeed.current;
     }
 
@@ -57,7 +68,8 @@ function CastingBar() {
 
         render();
 
-        // Creating random position to be highlighted in the bar
+        // Creating random position to be highlighted in the barContainer
+        // the position value is going to be the middle of the highlighted area (instead of the left)
         const min = barStart + (highlightedAreaSize/2);
         const max = barEnd - (highlightedAreaSize/2);
         const randomPosition = Math.random() * (max - min) + min;
@@ -73,10 +85,12 @@ function CastingBar() {
         const handleSpaceKeyDown = () => {
             const highlightedAreaMin = highlightedAreaPosition - (highlightedAreaSize / 2);
             const highlightedAreaMax = highlightedAreaPosition + (highlightedAreaSize / 2);
+
+            // Checks if the pointer is inside the highlighted area
             if (arrowPointerPosition.current > highlightedAreaMin && arrowPointerPosition.current < highlightedAreaMax) {
-                console.log('Success!');
+                handleCastingMinigameEnd(castingMinigameStates.Success);
             } else {
-                console.log('ok...');
+                handleCastingMinigameEnd(castingMinigameStates.Ok);
             }
         }
         
@@ -102,6 +116,6 @@ function CastingBar() {
             </S.barContainer>
         </S.castingBarContainer>
     )
-} 
+}
 
-export default CastingBar;
+export default CastingMinigame;
