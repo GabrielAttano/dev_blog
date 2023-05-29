@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import PropTypes from 'prop-types';
 
 import * as S from './styled';
 
@@ -116,6 +117,10 @@ function CastingMinigame({ handleCastingMinigameEnd }) {
             </S.barContainer>
         </S.castingBarContainer>
     )
+}
+
+CastingMinigame.propTypes = {
+    handleCastingMinigameEnd: PropTypes.func.isRequired,
 }
 
 export default CastingMinigame;
