@@ -1,22 +1,27 @@
 import { useEffect, useState } from 'react';
 import * as S from './styled';
 
-import states from '../states';
-import CastingBar from '../castingBar';
+import mainScreenStates from './mainScreenStates';
+import CastingMinigame from '../castingMinigame';
 
 function MainScreen() {
-    const [gameState, setGameState] = useState(states.Idle);
-    
+    const [gameState, setGameState] = useState(mainScreenStates.Idle);
+
+    const handleCastingMinigameEnd = (state) => {
+        console.log(state);
+        setGameState(mainScreenStates.WaitingToHook);
+    }
+
     useEffect(() => {
         // Temporary way to test different states
-        if (gameState === states.Idle) {
-            setGameState(states.Casting);
+        if (gameState === mainScreenStates.Idle) {
+            setGameState(mainScreenStates.Casting);
         }
-    }, []);
+    }, [gameState]);
 
     return (
         <S.container>
-            {gameState === states.Casting ? <CastingBar/> : false}
+            {gameState === mainScreenStates.Casting ? <CastingMinigame handleCastingMinigameEnd={handleCastingMinigameEnd}/> : false}
         </S.container>
     )
 }
