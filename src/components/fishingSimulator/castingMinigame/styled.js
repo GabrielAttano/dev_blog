@@ -24,6 +24,7 @@ export const barContainer = styled.div`
 export const barHighlightedArea = styled.div`
     position: absolute;
     width: ${props => (props.size)}px;
+    border-radius: 8px;
     height: 100%;
     background-color: green;
     left: ${props => props.position - (props.size)/2}px;
