@@ -3,7 +3,7 @@ import * as S from './styled';
 
 import mainScreenStates from './mainScreenStates';
 import CastingMinigame from '../castingMinigame';
-import WaitingToHook from '../waitingToHook';
+import HookMinigame from '../hookMinigame';
 
 function MainScreen() {
     // game state
@@ -45,7 +45,7 @@ function MainScreen() {
         <S.container>
             {gameState === mainScreenStates.Idle ? startFishingButton() : showInfo()}
             {gameState === mainScreenStates.Casting ? <CastingMinigame handleCastingMinigameEnd={handleCastingMinigameEnd}/> : false}
-            {gameState === mainScreenStates.WaitingToHook ? <WaitingToHook></WaitingToHook> : false}
+            {gameState === mainScreenStates.WaitingToHook ? <HookMinigame></HookMinigame> : false}
         </S.container>
     )
 }
