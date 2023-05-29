@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as S from './styled';
 
 import mainScreenStates from './mainScreenStates';
@@ -7,8 +7,10 @@ import CastingMinigame from '../castingMinigame';
 function MainScreen() {
     const [gameState, setGameState] = useState(mainScreenStates.Idle);
 
+    const castingMinigameResult = useRef(null);
+
     const handleCastingMinigameEnd = (state) => {
-        console.log(state);
+        castingMinigameResult.current = state;
         setGameState(mainScreenStates.WaitingToHook);
     }
 
@@ -21,6 +23,14 @@ function MainScreen() {
 
     return (
         <S.container>
+            <S.containerSmall></S.containerSmall>
+            <S.containerSmall>
+                <div>state: {gameState}</div>
+                {castingMinigameResult.current !== null ? (
+                    <div>casting minigame result: {castingMinigameResult.current}</div>
+                ): false}   
+                
+            </S.containerSmall>
             {gameState === mainScreenStates.Casting ? <CastingMinigame handleCastingMinigameEnd={handleCastingMinigameEnd}/> : false}
         </S.container>
     )
