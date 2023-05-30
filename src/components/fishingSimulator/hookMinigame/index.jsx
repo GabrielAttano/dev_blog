@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+
 import { FaExclamation } from "react-icons/fa";
 
 import * as S from './styled';
 import hookMinigameStates from './hookMinigameStates';
 
-function HookMinigame() {
+function HookMinigame({ handleHookMinigameEnd }) {
 
     // waiting to hook configs
     // time => seconds
@@ -95,16 +97,12 @@ function HookMinigame() {
             handleTryingToHook();
         }
 
-        if (hookMinigameState === hookMinigameStates.Success) {
-            console.log("Success!");
+        if (hookMinigameState === hookMinigameStates.Success ||hookMinigameState === hookMinigameStates.Fail) {
+            handleHookMinigameEnd(hookMinigameState);
         }
         
         if (hookMinigameState === hookMinigameStates.NoAction) {
-            console.log('Failed to press input in time');
-        }
-
-        if (hookMinigameState === hookMinigameStates.Fail) {
-            console.log('Input pressed at the wrong time!');
+            setHookMinigameState(hookMinigameStates.Waiting);
         }
 
         return () => {
@@ -121,6 +119,10 @@ function HookMinigame() {
             {hookMinigameState === hookMinigameStates.NoAction ? <div>Não apertou espaço a tempo...</div> : false}
         </S.waitingToHookContainer>
     )
+}
+
+HookMinigame.propTypes = {
+    handleHookMinigameEnd: PropTypes.func.isRequired,
 }
 
 export default HookMinigame;
