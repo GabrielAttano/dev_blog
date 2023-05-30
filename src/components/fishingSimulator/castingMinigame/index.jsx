@@ -2,7 +2,6 @@ import { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import * as S from './styled';
-
 import castingMinigameStates from './castingMinigameStates';
 
 function CastingMinigame({ handleCastingMinigameEnd }) {
