@@ -4,6 +4,7 @@ import * as S from './styled';
 import mainScreenStates from './mainScreenStates';
 import CastingMinigame from '../castingMinigame';
 import HookMinigame from '../hookMinigame';
+import hookMinigameStates from '../hookMinigame/hookMinigameStates';
 
 function MainScreen() {
     // game state
@@ -14,6 +15,19 @@ function MainScreen() {
     const handleCastingMinigameEnd = (state) => {
         castingMinigameResult.current = state;
         setGameState(mainScreenStates.WaitingToHook);
+    }
+
+    // hook minigame
+    const hookMinigameResult = useRef(null);
+    const handleHookMinigameEnd = (state) => {
+        if (state === hookMinigameStates.Fail) {
+            setGameState(mainScreenStates.Idle);
+            return;
+        }
+        if (state === hookMinigameStates.Success) {
+            hookMinigameResult.current = state;
+            setGameState(mainScreenStates.Fishing);
+        }
     }
 
     const showInfo = () => {
@@ -45,7 +59,7 @@ function MainScreen() {
         <S.container>
             {gameState === mainScreenStates.Idle ? startFishingButton() : showInfo()}
             {gameState === mainScreenStates.Casting ? <CastingMinigame handleCastingMinigameEnd={handleCastingMinigameEnd}/> : false}
-            {gameState === mainScreenStates.WaitingToHook ? <HookMinigame></HookMinigame> : false}
+            {gameState === mainScreenStates.WaitingToHook ? <HookMinigame handleHookMinigameEnd={handleHookMinigameEnd}></HookMinigame> : false}
         </S.container>
     )
 }
